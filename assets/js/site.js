@@ -11,6 +11,17 @@ let activeTodoList={
 let todoListItems = document.getElementById('mainList')
 let listNameElement = document.getElementById('activeListName')
 
+// buttons
+let newListButton = document.getElementById('newListButton')
+newListButton.addEventListener('click', newList)
+
+let deleteListButton = document.getElementById('deleteListButton')
+deleteListButton.addEventListener('click', deleteList)
+
+let showListButton = document.getElementById('showListButton')
+showListButton.addEventListener('click', showListMenu)
+
+
 initApp()
 
 function initApp(){
@@ -20,6 +31,61 @@ function initApp(){
     renderTodoLists()
 }
 
+
+
+
+function listCallback(event){
+    console.log(event.currentTarget.dataset.index);
+    let index = event.currentTarget.dataset.index
+    let item = activeTodoList.items[index]
+    activeTodoList.items.splice(index,1)
+    renderTodoLists()
+}
+
+function newItem(){
+    let item = prompt("ny opgave")
+    if(item!=null && item!=''){
+        activeTodoList.items.push(item)
+        renderTodoLists()
+    }   
+  
+}
+
+function newList(){
+    let newList = prompt("ny liste")
+    
+    if(newList!=null && newList!=''){
+
+        activeTodoList={
+            name:newList,
+            items:[]
+        }
+        renderTodoLists()
+    }   
+  
+}
+
+function deleteList(event){
+    let index = event.currentTarget.dataset.index
+    todoLists.splice(index,1)
+    renderTodoLists()
+}
+
+
+function showListMenu(event){
+
+    let menu = document.getElementById('listMenu')
+    menu.innerHTML=''
+    menu.style.display='block'
+    todoLists.forEach((list,index)=>{
+        let myItem=`<div class="listMenuElement" data-index="${index}">${list.name}</div>`
+        menu.innerHTML+=myItem
+    })  
+
+}
+
+
+// view code ---------------------------------------------------------------------------------
 
 function renderTodoLists(){
    
@@ -38,21 +104,4 @@ function renderTodoLists(){
 
     todoListItems.innerHTML+='<h2 onclick="newItem()" >+</h2>'
    
-}
-
-function listCallback(event){
-    console.log(event.currentTarget.dataset.index);
-    let index = event.currentTarget.dataset.index
-    let item = activeTodoList.items[index]
-    activeTodoList.items.splice(index,1)
-    renderTodoLists()
-}
-
-function newItem(){
-    let item = prompt("ny opgave")
-    if(item!=null && item!=''){
-        activeTodoList.items.push(item)
-        renderTodoLists()
-    }   
-  
 }
